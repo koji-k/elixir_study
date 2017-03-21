@@ -45,6 +45,7 @@ defmodule Comprehensions do
     |> Enum.filter(fn x -> rem(x,3) == 0 end)
   end
 
-
-
+  # 内包表記は結果をリストに詰めて返すけど、"into: 型"を使えば別のコレクションに変換することも可能
+  # 例えば、キーワードリストからマップへの変換
+  assert %{one: 1, two: 2, three: 3} == for {k,v} <- [one: 1, two: 2, three: 3], into: %{}, do: {k, v}
 end
