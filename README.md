@@ -35,4 +35,8 @@ iexからもOK
 ```
 iex -S mix
 FizzBuzz.upto(100)
+
+# 以下を実行すれば、lib/配下のファイルをコンパイルして読み込みなおしてくれる。
+recompile()
 ```
+
