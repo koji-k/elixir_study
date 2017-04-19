@@ -64,8 +64,8 @@ defmodule FunctionsTest do
   @doc """
   関数のパターンマッチ
   """
-  test "base" do
-    defmodule Hoge do
+  test "test3" do
+    defmodule HogeTest3 do
       def f1(:ok, x) do
         ~s(ok - #{x})
       end
@@ -74,12 +74,46 @@ defmodule FunctionsTest do
       end
     end
 
-    assert Hoge.f1(:ok, "aiueo") == "ok - aiueo"
-    assert Hoge.f1(:ng, "aiueo") == "ng - aiueo"
+    assert HogeTest3.f1(:ok, "aiueo") == "ok - aiueo"
+    assert HogeTest3.f1(:ng, "aiueo") == "ng - aiueo"
   end
 
 
-  test "anonymous function" do
+
+  @doc """
+  関数のガード
+  関数のオーバロードとは違い、同じシグネチャの関数でも、whenを使ってどの関数を実行するか制御できる
+  """
+  test "test4" do
+    defmodule HogeTest4 do
+      def hello(name) when is_list(name) do
+        name
+        |> Enum.join("...")
+        |> hello
+      end
+
+      def hello(name) when is_binary(name) do
+        phrase() <> name
+      end
+
+      defp phrase(), do: "Hello, "
+    end
+
+    assert HogeTest4.hello("koji") == "Hello, koji"
+    assert HogeTest4.hello(["a", "b", "c"]) == "Hello, a...b...c"
+  end
+
+  @doc"""
+  関数のパターンマッチと再帰のサンプル
+  """
+  test "test5" do
+    defmodule LengthTest5 do
+      def of([]), do: 0
+      def of([_ | rest]), do: 1 + of(rest)
+    end
+
+    assert LengthTest5.of([]) == 0
+    assert LengthTest5.of([1,2,3]) == 3
   end
 
 end
